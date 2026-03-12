@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { tanstackStart } from '@tanstack/react-start-plugin'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
 import mdx from '@mdx-js/rollup'
@@ -31,6 +32,8 @@ export default defineConfig({
       prerender: {
         routes: ['/', '/blog', ...blogSlugs.map((slug) => `/blog/${slug}`)],
       },
+      customViteReactPlugin: true,
     }),
+    react(),
   ],
 })
