@@ -58,9 +58,46 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
+
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Holographic headline effect - glow inside text */
+.hero-holo {
+  position: relative;
+}
+
+.hero-holo .glow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  background: radial-gradient(
+    circle 200px at var(--x, 50%) var(--y, 50%),
+    rgba(45, 212, 191, 1) 0%,
+    rgba(168, 85, 247, 0.8) 30%,
+    rgba(245, 158, 11, 0.6) 50%,
+    transparent 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hero-holo:hover .glow-overlay {
+  opacity: 1;
 }
 
 /* Perspective for 3D effects */

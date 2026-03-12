@@ -249,9 +249,30 @@ export default function App() {
             </div>
 
             {/* Headline */}
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[1.05] tracking-tight">
-              The Operating Stack for<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-amber-400 to-purple-500">
+            <h1 
+              className="hero-holo relative font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[1.05] tracking-tight cursor-default"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                e.currentTarget.style.setProperty('--x', `${x}px`);
+                e.currentTarget.style.setProperty('--y', `${y}px`);
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.setProperty('--x', '50%');
+                e.currentTarget.style.setProperty('--y', '50%');
+              }}
+            >
+              {/* Base text */}
+              <span className="relative z-10">
+                The Operating Stack for<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-amber-400 to-purple-500">
+                  Autonomous Agents
+                </span>
+              </span>
+              {/* Glow overlay - same text with radial gradient clipped inside */}
+              <span className="glow-overlay absolute inset-0 z-20">
+                The Operating Stack for<br />
                 Autonomous Agents
               </span>
             </h1>
@@ -272,14 +293,17 @@ export default function App() {
               className="flex flex-wrap items-center justify-center gap-3 md:gap-0 mb-10"
             >
               {[
-                { icon: Zap, label: '~6MB Runtime' },
-                { icon: Activity, label: 'Process-Based' },
-                { icon: Shield, label: 'Local-First' },
-                { icon: Github, label: 'Open Source' },
+                { icon: Zap, label: '~6MB Runtime', color: 'text-teal-400' },
+                { icon: Activity, label: 'Process-Based', color: 'text-amber-400' },
+                { icon: Shield, label: 'Local-First', color: 'text-emerald-400' },
+                { icon: Github, label: 'Open Source', color: 'text-purple-400' },
               ].map((item, i) => (
-                <div key={item.label} className="flex items-center gap-2 px-4 py-2">
-                  <item.icon className="w-3.5 h-3.5 text-teal-400/70" />
-                  <span className="text-xs font-mono text-slate-400 tracking-wider">{item.label}</span>
+                <div 
+                  key={item.label} 
+                  className="group flex items-center gap-2 px-4 py-2 cursor-default"
+                >
+                  <item.icon className={`w-3.5 h-3.5 ${item.color} transition-all duration-300 group-hover:drop-shadow-[0_0_8px_currentColor]`} />
+                  <span className="text-xs font-mono text-slate-400 tracking-wider group-hover:text-white transition-colors duration-300">{item.label}</span>
                   {i < 3 && <span className="hidden md:inline text-slate-700 ml-4">|</span>}
                 </div>
               ))}
@@ -287,11 +311,17 @@ export default function App() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#stack" className="group relative overflow-hidden px-8 py-4 text-sm font-mono font-bold text-black bg-teal-400 hover:bg-teal-300 transition-all shadow-[0_0_30px_rgba(45,212,191,0.4)] flex items-center gap-2">
+              <a 
+                href="#stack" 
+                className="group relative overflow-hidden px-8 py-4 text-sm font-mono font-bold text-black bg-teal-400 hover:bg-teal-300 transition-all shadow-[0_0_30px_rgba(45,212,191,0.4)] hover:shadow-[0_0_40px_rgba(45,212,191,0.6)] flex items-center gap-2"
+              >
                 EXPLORE THE ARCHITECTURE
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
-              <a href="https://github.com" className="px-8 py-4 text-sm font-mono font-bold text-slate-300 border border-white/20 hover:border-white/40 hover:text-white transition-all flex items-center gap-2">
+              <a 
+                href="https://github.com" 
+                className="px-8 py-4 text-sm font-mono font-bold text-slate-300 border border-white/20 hover:border-white/60 hover:text-white transition-all flex items-center gap-2"
+              >
                 <Github className="w-4 h-4" />
                 VIEW ON GITHUB
               </a>
