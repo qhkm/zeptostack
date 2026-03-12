@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wow Factor Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@100..800&family=Inter:wght@300;400;500;600&display=swap');
+    
+    body { font-family: 'Inter', sans-serif; background: #000; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ===== OPTION 1: Particle Network Background ===== */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* ===== OPTION 2: Holographic Card Effect ===== */
+    .holo-card {
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      overflow: hidden;
+    }
+    .holo-card::before {
+      content: '';
+      position: absolute;
+      top: var(--y, 50%);
+      left: var(--x, 50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(45, 212, 191, 0.4) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .holo-card:hover::before {
+      opacity: 1;
+    }
+    .holo-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(45, 212, 191, 0.1) 45%,
+        rgba(45, 212, 191, 0.2) 50%,
+        rgba(45, 212, 191, 0.1) 55%,
+        transparent 60%
+      );
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .holo-card:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* ===== OPTION 3: Glitch Text Effect ===== */
+    .glitch {
+      position: relative;
+      color: white;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .glitch::before {
+      animation: glitch-1 0.3s infinite linear alternate-reverse;
+      color: #2dd4bf;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    }
+    .glitch::after {
+      animation: glitch-2 0.3s infinite linear alternate-reverse;
+      color: #a855f7;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    }
+    @keyframes glitch-1 {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+    @keyframes glitch-2 {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(2px, -2px); }
+      40% { transform: translate(2px, 2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(-2px, 2px); }
+    }
+
+    /* ===== OPTION 4: Morphing Blob Background ===== */
+    .blob {
+      position: absolute;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: blob-morph 10s ease-in-out infinite;
+    }
+    @keyframes blob-morph {
+      0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+      50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+      75% { border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%; }
+    }
+
+    /* ===== OPTION 5: 3D Tilt Card ===== */
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.1s;
+    }
+    .tilt-content {
+      transform: translateZ(50px);
+    }
+
+    /* ===== OPTION 6: Typewriter with Cursor ===== */
+    .typewriter {
+      overflow: hidden;
+      border-right: 2px solid #2dd4bf;
+      white-space: nowrap;
+      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #2dd4bf }
+    }
+
+    /* ===== OPTION 7: Neon Pulse Ring ===== */
+    .neon-ring {
+      position: relative;
+    }
+    .neon-ring::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: inherit;
+      background: conic-gradient(from 0deg, #2dd4bf, #a855f7, #2dd4bf);
+      animation: neon-spin 3s linear infinite;
+      z-index: -1;
+    }
+    .neon-ring::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: #000;
+      z-index: -1;
+    }
+    @keyframes neon-spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===== OPTION 8: Data Stream Rain ===== */
+    .data-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .data-column {
+      position: absolute;
+      top: -100%;
+      color: rgba(45, 212, 191, 0.3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 20px;
+      animation: data-fall linear infinite;
+    }
+    @keyframes data-fall {
+      to { transform: translateY(100vh); }
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+
+  <!-- Header -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="font-display text-xl font-bold">Wow Factor Options</h1>
+      <span class="text-xs text-slate-400 font-mono">Pick your favorite effect</span>
+    </div>
+  </div>
+
+  <div class="pt-24 pb-32 px-6 max-w-7xl mx-auto space-y-32">
+
+    <!-- OPTION 1: Particle Network -->
+    <section class="relative">
+      <div class="mb-6">
+        <span class="text-teal-400 font-mono text-sm">OPTION 01</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Interactive Particle Network</h2>
+        <p class="text-slate-400 mt-2">Particles connect when near each other, mouse interaction creates ripples</p>
+      </div>
+      <div class="relative h-96 bg-gradient-to-br from-slate-900 to-black rounded-lg overflow-hidden border border-white/10">
+        <canvas id="demo-particles" class="absolute inset-0"></canvas>
+        <div class="absolute bottom-4 left-4 text-xs font-mono text-slate-500">Move your mouse over this area</div>
+      </div>
+    </section>
+
+    <!-- OPTION 2: Holographic Cards -->
+    <section>
+      <div class="mb-6">
+        <span class="text-amber-400 font-mono text-sm">OPTION 02</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Holographic Card Shine</h2>
+        <p class="text-slate-400 mt-2">3D light reflection effect that follows cursor movement</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="holo-card p-6 rounded-lg cursor-pointer" onmousemove="updateHolo(event, this)" onmouseleave="resetHolo(this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 bg-teal-500/20 rounded flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg">ZeptoClaw</h3>
+            <p class="text-sm text-slate-400 mt-2">AI Worker Agents with holographic interface</p>
+          </div>
+        </div>
+        <div class="holo-card p-6 rounded-lg cursor-pointer border-amber-500/30" onmousemove="updateHolo(event, this)" onmouseleave="resetHolo(this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 bg-amber-500/20 rounded flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg">ZeptoR8R</h3>
+            <p class="text-sm text-slate-400 mt-2">Workflow Automation with light trails</p>
+          </div>
+        </div>
+        <div class="holo-card p-6 rounded-lg cursor-pointer border-purple-500/30" onmousemove="updateHolo(event, this)" onmouseleave="resetHolo(this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 bg-purple-500/20 rounded flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg">ZeptoPM</h3>
+            <p class="text-sm text-slate-400 mt-2">Process Manager with neural glow</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION 3: Glitch Text -->
+    <section>
+      <div class="mb-6">
+        <span class="text-purple-400 font-mono text-sm">OPTION 03</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Cyberpunk Glitch Text</h2>
+        <p class="text-slate-400 mt-2">RGB split glitch effect on hover or continuously</p>
+      </div>
+      <div class="p-12 bg-slate-900/50 rounded-lg border border-white/10 text-center">
+        <h1 class="font-display text-6xl md:text-8xl font-bold glitch mb-4" data-text="ZEPTOSTACK">ZEPTOSTACK</h1>
+        <p class="text-slate-400 font-mono">Hover over the text above ↑</p>
+      </div>
+    </section>
+
+    <!-- OPTION 4: Morphing Blobs -->
+    <section class="relative">
+      <div class="mb-6">
+        <span class="text-emerald-400 font-mono text-sm">OPTION 04</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Morphing Gradient Blobs</h2>
+        <p class="text-slate-400 mt-2">Organic shapes that slowly morph and float in background</p>
+      </div>
+      <div class="relative h-96 bg-black rounded-lg overflow-hidden border border-white/10">
+        <div class="blob w-64 h-64 bg-teal-500 top-10 left-10" style="animation-delay: 0s;"></div>
+        <div class="blob w-72 h-72 bg-purple-500 top-20 right-20" style="animation-delay: -3s;"></div>
+        <div class="blob w-56 h-56 bg-emerald-500 bottom-10 left-1/3" style="animation-delay: -6s;"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center z-10">
+            <h3 class="font-display text-4xl font-bold">Fluid Motion</h3>
+            <p class="text-slate-400 mt-2 font-mono">Ambient background animation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION 5: 3D Tilt -->
+    <section>
+      <div class="mb-6">
+        <span class="text-blue-400 font-mono text-sm">OPTION 05</span>
+        <h2 class="font-display text-3xl font-bold mt-2">3D Tilt Cards</h2>
+        <p class="text-slate-400 mt-2">Cards that tilt in 3D space following cursor position</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 perspective-1000">
+        <div class="tilt-card bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl border border-white/10" onmousemove="tiltCard(event, this)" onmouseleave="resetTilt(this)">
+          <div class="tilt-content">
+            <div class="text-5xl mb-4">🚀</div>
+            <h3 class="font-display text-2xl font-bold mb-2">Deploy in Seconds</h3>
+            <p class="text-slate-400">Experience the 3D tilt effect as you move your mouse across this card</p>
+          </div>
+        </div>
+        <div class="tilt-card bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl border border-white/10" onmousemove="tiltCard(event, this)" onmouseleave="resetTilt(this)">
+          <div class="tilt-content">
+            <div class="text-5xl mb-4">⚡</div>
+            <h3 class="font-display text-2xl font-bold mb-2">Lightning Fast</h3>
+            <p class="text-slate-400">Sub-millisecond response times with intelligent caching</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION 6: Typewriter -->
+    <section>
+      <div class="mb-6">
+        <span class="text-rose-400 font-mono text-sm">OPTION 06</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Terminal Typewriter</h2>
+        <p class="text-slate-400 mt-2">Classic terminal typing effect with blinking cursor</p>
+      </div>
+      <div class="bg-black p-8 rounded-lg border border-white/10 font-mono">
+        <div class="flex items-center gap-2 mb-4 text-slate-500 text-sm">
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+          <span class="ml-2">terminal — zsh</span>
+        </div>
+        <div class="text-teal-400">
+          <span class="text-slate-500">$</span> 
+          <span class="typewriter inline-block">npm run initialize-zepto-stack</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION 7: Neon Pulse Button -->
+    <section>
+      <div class="mb-6">
+        <span class="text-cyan-400 font-mono text-sm">OPTION 07</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Neon Pulse Ring</h2>
+        <p class="text-slate-400 mt-2">Rotating gradient border with glow effect</p>
+      </div>
+      <div class="p-12 bg-slate-900/50 rounded-lg border border-white/10 flex items-center justify-center gap-8">
+        <button class="neon-ring px-8 py-4 bg-black rounded-lg font-mono font-bold text-teal-400 hover:scale-105 transition-transform">
+          INITIATE SEQUENCE
+        </button>
+        <button class="neon-ring px-8 py-4 bg-black rounded-lg font-mono font-bold text-purple-400 hover:scale-105 transition-transform">
+          DEPLOY AGENT
+        </button>
+      </div>
+    </section>
+
+    <!-- OPTION 8: Data Rain -->
+    <section class="relative">
+      <div class="mb-6">
+        <span class="text-green-400 font-mono text-sm">OPTION 08</span>
+        <h2 class="font-display text-3xl font-bold mt-2">Matrix Data Rain</h2>
+        <p class="text-slate-400 mt-2">Falling code/data streams like the Matrix effect</p>
+      </div>
+      <div class="relative h-96 bg-black rounded-lg overflow-hidden border border-white/10" id="data-rain-container">
+        <div class="absolute inset-0 flex items-center justify-center z-10">
+          <div class="text-center bg-black/80 p-6 rounded-lg backdrop-blur">
+            <h3 class="font-display text-2xl font-bold text-green-400">SYSTEM BREACH</h3>
+            <p class="text-slate-400 mt-2 font-mono text-sm">Decrypting data streams...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // ===== PARTICLE NETWORK =====
+    const canvas = document.getElementById('demo-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1;
+        this.vy = (Math.random() - 0.5) * 1;
+        this.size = Math.random() * 2 + 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        
+        // Mouse interaction
+        if (mouse.x != null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            this.x -= dx * 0.02;
+            this.y -= dy * 0.02;
+          }
+        }
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(45, 212, 191, 0.6)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < 50; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        // Draw connections
+        for (let j = i; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(45, 212, 191, ${0.2 - distance/500})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    initParticles();
+    animateParticles();
+
+    // ===== HOLOGRAPHIC EFFECT =====
+    function updateHolo(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--x', x + '%');
+      card.style.setProperty('--y', y + '%');
+    }
+    function resetHolo(card) {
+      card.style.setProperty('--x', '50%');
+      card.style.setProperty('--y', '50%');
+    }
+
+    // ===== 3D TILT =====
+    function tiltCard(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 10;
+      const rotateY = (centerX - x) / 10;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    }
+    function resetTilt(card) {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    }
+
+    // ===== DATA RAIN =====
+    function createDataRain() {
+      const container = document.getElementById('data-rain-container');
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      
+      for (let i = 0; i < 20; i++) {
+        const column = document.createElement('div');
+        column.className = 'data-column';
+        column.style.left = `${i * 5}%`;
+        column.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        column.style.animationDelay = `${Math.random() * 2}s`;
+        
+        let text = '';
+        for (let j = 0; j < 30; j++) {
+          text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+        }
+        column.innerHTML = text;
+        container.appendChild(column);
+      }
+    }
+    createDataRain();
+  </script>
+</body>
+</html>
