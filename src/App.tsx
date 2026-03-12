@@ -312,19 +312,20 @@ export default function App() {
                 <span className="text-xs font-mono text-teal-400 tracking-widest uppercase mb-4 block">The Gap</span>
                 <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-6">Why ZeptoStack Exists</h2>
                 <p className="text-slate-400 text-lg mb-3">
-                  The current agent ecosystem is optimized for getting an agent to <span className="text-white">work</span>.
+                  Most workflow and agent platforms were designed for <span className="text-white">server-centric automation</span>.
                 </p>
-                <p className="text-slate-400 text-lg mb-8">
-                  ZeptoStack is optimized for getting an agent to <span className="text-teal-400 font-medium">run reliably in the real world</span>.
+                <p className="text-slate-400 text-lg mb-6">
+                  ZeptoStack is being designed for something else: a world of lightweight autonomous agents running <span className="text-teal-400 font-medium">locally, at the edge, and near real devices</span>.
                 </p>
-                <p className="text-sm text-slate-500 mb-5">That requires a different set of priorities:</p>
+                <p className="text-sm text-slate-500 mb-5">We believe that in an agent-native world, the stack has to be reinvented. It must support:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: Zap, text: 'Small binaries that can run anywhere' },
-                    { icon: Activity, text: 'Process-based architecture for isolation and scale' },
-                    { icon: Shield, text: 'Secure execution boundaries for tools and code' },
+                    { icon: Zap, text: 'Lightweight processes' },
+                    { icon: Server, text: 'Durable long-running execution' },
+                    { icon: Activity, text: 'Replay and recovery' },
+                    { icon: Cpu, text: 'Effect tracking' },
                     { icon: Layers, text: 'Orchestration across many agents' },
-                    { icon: Server, text: 'Durable runtime support for long-running tasks' },
+                    { icon: Shield, text: 'Configurable execution isolation' },
                   ].map((item) => (
                     <div key={item.text} className="flex items-center gap-3 text-slate-300">
                       <item.icon className="w-4 h-4 text-teal-400 shrink-0" />
@@ -333,7 +334,8 @@ export default function App() {
                   ))}
                 </div>
                 <p className="text-slate-500 mt-6 text-sm">
-                  This is the gap ZeptoStack is designed to fill.
+                  Not just to help build agents.<br />
+                  <span className="text-slate-400">To provide the operating foundation for running them reliably in the real world.</span>
                 </p>
               </motion.div>
 
