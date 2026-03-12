@@ -1,24 +1,36 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-import {defineConfig, loadEnv} from 'vite';
+import { defineConfig } from 'vite'
+import { tanstackStart } from '@tanstack/react-start-plugin'
+import tailwindcss from '@tailwindcss/vite'
+import tsConfigPaths from 'vite-tsconfig-paths'
+import mdx from '@mdx-js/rollup'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
+import { readdirSync, existsSync } from 'node:fs'
 
-export default defineConfig(({mode}) => {
-  const env = loadEnv(mode, '.', '');
-  return {
-    plugins: [react(), tailwindcss()],
-    define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
+const blogDir = 'content/blog'
+const blogSlugs = existsSync(blogDir)
+  ? readdirSync(blogDir)
+      .filter((f) => f.endsWith('.mdx'))
+      .map((f) => f.replace('.mdx', ''))
+  : []
+
+export default defineConfig({
+  server: { port: 3000 },
+  plugins: [
+    tailwindcss(),
+    tsConfigPaths(),
+    mdx({
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+    }),
+    tanstackStart({
+      tsr: {
+        routesDirectory: './app/routes',
+        generatedRouteTree: './app/routeTree.gen.ts',
+        srcDirectory: './app',
       },
-    },
-    server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
-      hmr: process.env.DISABLE_HMR !== 'true',
-    },
-  };
-});
+      prerender: {
+        routes: ['/', '/blog', ...blogSlugs.map((slug) => `/blog/${slug}`)],
+      },
+    }),
+  ],
+})
