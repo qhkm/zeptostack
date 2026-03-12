@@ -33,7 +33,7 @@ zeptostack/
 │   ├── router.tsx                # Router configuration
 │   ├── ssr.tsx                   # SSR entry point
 │   └── styles/
-│       └── index.css             # Global styles + Tailwind v4
+│       └── index.css             # Global styles + Tailwind v4 + all custom animations
 ├── content/
 │   └── blog/
 │       └── hello-world.mdx       # Example blog post
@@ -52,13 +52,25 @@ zeptostack/
 
 ## Component Extraction
 
-The current monolithic `App.tsx` (~678 lines) is split into:
+The current monolithic `App.tsx` (~658 lines) is split into:
 
-- **`__root.tsx`** — HTML shell (`<html>`, `<head>`, `<body>`), background effects, imports global CSS
-- **`Navbar.tsx`** — Site navigation with route-aware links (TanStack Router `<Link>`)
-- **`Footer.tsx`** — Site footer
+- **`__root.tsx`** — HTML shell (`<html>`, `<head>`, `<body>`), background effects, imports global CSS. Page title: "ZeptoStack — Local-First Autonomous Infrastructure" (replaces the AI Studio placeholder). Font imports (`Geist`, `Space Mono`, `JetBrains Mono`) move from CSS `@import` to `<link>` tags in the `<head>` for better loading performance.
+- **`Navbar.tsx`** — Site navigation. Uses plain `<a href="/#section">` for landing page anchor links (not TanStack Router `<Link>`) so they work correctly both on the landing page (smooth scroll) and from blog pages (navigate to landing page + scroll). Uses `<Link>` for actual route navigation (`/blog`).
+- **`Footer.tsx`** — Site footer with AISAR branding
 - **`ParticleBackground.tsx`** — Canvas particle animation with mouse tracking
-- **`routes/index.tsx`** — All landing page sections (hero, why, stack, vision, CTA) plus the product/stack data arrays
+- **`routes/index.tsx`** — All landing page sections (hero, why, stack, why-this-matters, vision, CTA) plus the `products`, `stackLayers`, and `visionStages` data arrays
+
+## Styles Migration
+
+The current `index.css` moves to `app/styles/index.css`. All custom CSS must be preserved:
+
+- Custom keyframe animations: `scanline`, `pulse-slow`, `gradient-shift`, `grid-pan`, `shimmer`, `float`, `gradient-pan`
+- Custom utility classes: `animate-scanline`, `animate-pulse-slow`, `animate-gradient-shift`, `animate-grid-pan`, `animate-float`, `hero-gradient`, `perspective-1000`
+- Custom scrollbar styles (`::-webkit-scrollbar`)
+- Smooth scroll behavior (`scroll-behavior: smooth`)
+- Tailwind v4 `@theme` block with font-family definitions
+
+Font `@import url(...)` statements are removed from CSS and replaced with `<link>` tags in `__root.tsx` `<head>`.
 
 ## Blog System
 
@@ -84,7 +96,7 @@ author: "AISAR"
 
 ### Blog Utilities (`app/lib/blog.ts`)
 
-- `getAllPosts()` — Scans `content/blog/`, parses frontmatter, returns sorted post list
+- `getAllPosts()` — Scans `content/blog/`, parses frontmatter, returns sorted post list (newest first)
 - `getPostBySlug(slug)` — Returns a single post's metadata and compiled MDX component
 - Uses `import.meta.glob` to discover and load MDX files
 
@@ -109,6 +121,19 @@ Each route uses `createFileRoute` with a `loader`:
 - Dark background, light text, teal accents for links and headings
 - Back link to `/blog`
 
+## SEO & Meta Tags
+
+- **`__root.tsx`** includes default `<title>` and `<meta name="description">` for the site
+- **Blog post route** sets per-post `<title>` and `<meta name="description">` using the frontmatter `title` and `excerpt` fields
+- **Blog listing** sets its own title: "Blog — ZeptoStack"
+- Open Graph tags (`og:title`, `og:description`) set per route for social sharing
+
+## Error & 404 Handling
+
+- **Root level:** `notFoundComponent` in the router config renders a styled 404 page matching the site's dark theme
+- **Blog post route:** If `getPostBySlug()` returns no match, throw a `notFound()` error to trigger the 404 page
+- **Unknown routes:** Caught by the root `notFoundComponent`
+
 ## Static Prerendering
 
 All routes are prerendered at build time in `app.config.ts`:
@@ -116,6 +141,40 @@ All routes are prerendered at build time in `app.config.ts`:
 - `/` — Always prerendered
 - `/blog` — Always prerendered
 - `/blog/:slug` — Dynamically discovered by scanning `content/blog/*.mdx` filenames
+
+Example `app.config.ts` skeleton:
+
+```ts
+import { defineConfig } from '@tanstack/react-start/config'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
+import mdx from '@mdx-js/rollup'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
+import { readdirSync } from 'node:fs'
+
+const blogSlugs = readdirSync('content/blog')
+  .filter(f => f.endsWith('.mdx'))
+  .map(f => f.replace('.mdx', ''))
+
+export default defineConfig({
+  vite: {
+    plugins: [
+      mdx({
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+      }),
+    ],
+  },
+  server: {
+    prerender: {
+      routes: [
+        '/',
+        '/blog',
+        ...blogSlugs.map(slug => `/blog/${slug}`),
+      ],
+    },
+  },
+})
+```
 
 Output is fully static HTML, deployable to Cloudflare Pages or any static host.
 
@@ -138,6 +197,8 @@ Output is fully static HTML, deployable to Cloudflare Pages or any static host.
 - `better-sqlite3` — Unused
 - `@google/genai` — Unused
 - `dotenv` — Unused
+- `@types/express` — Unused (follows express removal)
+- `autoprefixer` — Tailwind v4 handles vendor prefixing internally
 
 ### Keep
 
@@ -146,6 +207,7 @@ Output is fully static HTML, deployable to Cloudflare Pages or any static host.
 - `lucide-react` — Icons
 - `tailwindcss`, `@tailwindcss/vite` — Styling
 - `typescript`, `tsx` — Dev tooling
+- `@types/node` — Needed by TanStack Start / Vinxi
 
 ## Files Removed
 
