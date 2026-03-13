@@ -20,13 +20,16 @@ export function Navbar() {
         <a href="/#vision" className="hover:text-teal-400 transition-colors">
           /VISION
         </a>
+        <Link to="/products" className="hover:text-teal-400 transition-colors">
+          /PRODUCTS
+        </Link>
         <Link to="/blog" className="hover:text-teal-400 transition-colors">
           /BLOG
         </Link>
       </div>
       <div className="flex items-center gap-4">
         <a
-          href="https://github.com"
+          href="https://github.com/qhkm/zeptostack"
           className="hidden sm:flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
         >
           <Github className="w-5 h-5" />

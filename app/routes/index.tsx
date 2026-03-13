@@ -192,7 +192,7 @@ function HomePage() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/qhkm/zeptostack"
                 className="px-8 py-4 text-sm font-mono font-bold text-slate-300 border border-white/20 hover:border-white/60 hover:text-white transition-all flex items-center gap-2"
               >
                 <Github className="w-4 h-4" />
