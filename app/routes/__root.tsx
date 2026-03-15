@@ -17,6 +17,23 @@ export const Route = createRootRoute({
         content:
           'ZeptoStack — A lightweight, secure, local-first stack for running autonomous agents reliably.',
       },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'ZeptoStack — The Operating Stack for Autonomous Agents' },
+      {
+        property: 'og:description',
+        content:
+          'A lightweight, secure, local-first stack for running autonomous agents reliably — from personal AI assistants to edge and IoT automation.',
+      },
+      { property: 'og:image', content: 'https://zeptostack.com/og-image.png' },
+      { property: 'og:url', content: 'https://zeptostack.com' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'ZeptoStack — The Operating Stack for Autonomous Agents' },
+      {
+        name: 'twitter:description',
+        content:
+          'A lightweight, secure, local-first stack for running autonomous agents reliably.',
+      },
+      { name: 'twitter:image', content: 'https://zeptostack.com/og-image.png' },
     ],
     title: 'ZeptoStack — Local-First Autonomous Infrastructure',
     links: [

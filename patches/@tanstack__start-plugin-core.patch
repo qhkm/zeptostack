@@ -1,0 +1,15 @@
+diff --git a/dist/esm/post-server-build.js b/dist/esm/post-server-build.js
+index 52d3d6c..8662564 100644
+--- a/dist/esm/post-server-build.js
++++ b/dist/esm/post-server-build.js
+@@ -49,6 +49,10 @@ async function postServerBuild({
+       publicDir: builder.environments[VITE_ENVIRONMENT_NAMES.client]?.config.build.outDir ?? builder.config.build.outDir
+     });
+   }
++
++  if (startConfig.prerender?.enabled) {
++    setTimeout(() => process.exit(0), 5000);
++  }
+ }
+ export {
+   postServerBuild

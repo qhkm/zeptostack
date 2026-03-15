@@ -36,6 +36,11 @@ export function getPostBySlug(slug: string) {
   return {
     slug,
     frontmatter: mod.frontmatter,
-    Content: mod.default,
   }
+}
+
+export function getPostContent(slug: string): ComponentType | null {
+  const path = `/content/blog/${slug}.mdx`
+  const mod = modules[path]
+  return mod?.default ?? null
 }

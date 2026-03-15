@@ -30,7 +30,10 @@ export default defineConfig({
         generatedRouteTree: 'routeTree.gen.ts',
       },
       prerender: {
+        enabled: true,
         routes: ['/', '/blog', ...blogSlugs.map((slug) => `/blog/${slug}`)],
+        crawlLinks: true,
+        autoSubfolderIndex: false,
       },
       customViteReactPlugin: true,
     }),

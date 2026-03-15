@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "zeptostack",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,8 +7,15 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "pnpm build && wrangler pages deploy dist/client",
+    "pages:dev": "wrangler pages dev dist/client",
     "clean": "rm -rf dist .output",
     "lint": "tsc --noEmit"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@tanstack/start-plugin-core": "patches/@tanstack__start-plugin-core.patch"
+    }
   },
   "dependencies": {
     "@mdx-js/rollup": "^3.1.1",
@@ -29,6 +36,7 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^7.3.1",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "wrangler": "^4.72.0"
   }
 }

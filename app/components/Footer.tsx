@@ -10,7 +10,7 @@ export function Footer() {
             zeptostack
           </span>
           <span className="text-xs font-mono text-slate-600 ml-2">
-            by AISAR
+            by Aisar Labs
           </span>
         </div>
         <p className="text-xs text-slate-600 font-mono">

@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, Link } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { ArrowLeft } from 'lucide-react'
-import { getPostBySlug } from '~/lib/blog'
+import { getPostBySlug, getPostContent } from '~/lib/blog'
 import { mdxComponents } from '~/lib/mdx-components'
 import { Navbar } from '~/components/Navbar'
 import { Footer } from '~/components/Footer'
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/blog/$slug')({
   loader: ({ params }) => {
     const post = getPostBySlug(params.slug)
     if (!post) throw notFound()
-    return post
+    return { slug: post.slug, frontmatter: post.frontmatter }
   },
   component: BlogPost,
   head: ({ loaderData }) => ({
@@ -24,7 +24,8 @@ export const Route = createFileRoute('/blog/$slug')({
 })
 
 function BlogPost() {
-  const { frontmatter, Content } = Route.useLoaderData()
+  const { slug, frontmatter } = Route.useLoaderData()
+  const Content = getPostContent(slug)
 
   return (
     <div className="min-h-screen bg-black text-slate-300 font-sans">
@@ -58,7 +59,7 @@ function BlogPost() {
 
           {/* MDX content */}
           <article>
-            <Content components={mdxComponents} />
+            {Content && <Content components={mdxComponents} />}
           </article>
         </motion.div>
       </main>
