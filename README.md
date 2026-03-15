@@ -4,6 +4,39 @@ A lightweight, secure, local-first stack for running autonomous agents reliably.
 
 **Live site:** https://zeptostack.com
 
+## The Problem
+
+Most agent and workflow platforms were designed for server-centric automation — large cloud deployments, heavy runtimes, centralized orchestration.
+
+But the next wave of AI isn't only larger models in the cloud. It's smaller, more reliable autonomous systems running **close to where work actually happens** — on laptops, gateways, edge devices, and near real machines.
+
+These systems need a different kind of infrastructure: lightweight processes, durable execution, replay and recovery, configurable isolation, and orchestration that works locally.
+
+## The Vision
+
+ZeptoStack is an operating stack for autonomous agents. Not a framework for building chatbots — a foundation for running agents as real software processes.
+
+**From personal agents to autonomous operations:**
+
+1. **Personal Agents** — On laptops and workstations
+2. **Edge & IoT** — On gateways and devices
+3. **Local Infrastructure** — Near machines and systems
+4. **Autonomous Operations** — Self-operating systems
+
+## The Stack
+
+Five layers, each solving a specific problem:
+
+| Layer | What it does |
+|-------|-------------|
+| **ZeptoClaw** | Ultra-lightweight agent engine (~6MB binary). Runs agents as independent processes — hundreds in parallel without heavy framework overhead. |
+| **ZeptoR8R** | Workflow automation engine. Multi-step flows, device and sensor events, tool coordination, retries and branching logic. |
+| **ZeptoPM** | Agent orchestrator. Manages large collections of agents — scheduling, lifecycle, resources — turning individual agents into coordinated systems. |
+| **ZeptoRT** | Durable runtime layer. Replay, recovery, effect tracking, and runtime guarantees for long-running execution that survives failures. |
+| **ZeptoCapsule** | Secure execution isolation. Configurable security levels — filesystem control, network policies — depending on risk and trust requirements. |
+
+Use them independently or together as a full deployment stack.
+
 ## Ecosystem
 
 | Project | Description | GitHub |
@@ -14,88 +47,12 @@ A lightweight, secure, local-first stack for running autonomous agents reliably.
 | ZeptoRT | Durable turn-based process runtime | [qhkm/zeptort](https://github.com/qhkm/zeptort) |
 | ZeptoCapsule | Isolation sandbox for AI agents | [qhkm/zeptocapsule](https://github.com/qhkm/zeptocapsule) |
 
-## Tech Stack
+## Design Principles
 
-- **Framework:** [TanStack Start](https://tanstack.com/start) (v1.166) with file-based routing
-- **Rendering:** Static Site Generation (SSG) via prerendering
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) with `@tailwindcss/vite`
-- **Blog:** MDX with `@mdx-js/rollup`, `remark-frontmatter`, `remark-mdx-frontmatter`
-- **Animations:** [Motion](https://motion.dev/) (motion/react)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Hosting:** [Cloudflare Pages](https://pages.cloudflare.com/) (static deployment, no Workers)
-- **Build:** [Vite 7](https://vite.dev/)
-
-## Project Structure
-
-```
-app/
-  routes/
-    __root.tsx          # Root layout (HTML shell, fonts, 404)
-    index.tsx           # Landing page
-    products.tsx        # Products showcase grid
-    blog/
-      index.tsx         # Blog listing
-      $slug.tsx         # Blog post (dynamic route)
-  components/
-    Navbar.tsx
-    Footer.tsx
-    ParticleBackground.tsx
-  lib/
-    blog.ts             # Blog utilities (getAllPosts, getPostBySlug)
-    mdx-components.tsx  # Styled MDX components
-  styles/
-    index.css           # Global styles + Tailwind
-content/
-  blog/
-    *.mdx               # Blog posts (MDX with frontmatter)
-```
-
-## Development
-
-**Prerequisites:** Node.js 20.19+, pnpm
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Dev server runs at http://localhost:3000
-
-## Adding Blog Posts
-
-Create a new `.mdx` file in `content/blog/`:
-
-```mdx
----
-title: "Your Post Title"
-date: "2026-03-12"
-excerpt: "A short description."
-author: "Your Name"
----
-
-Your markdown content here.
-```
-
-The post will be automatically discovered and prerendered at `/blog/<filename>`.
-
-## Build & Deploy
-
-```bash
-# Build with prerendering (SSG)
-pnpm build
-
-# Preview locally
-pnpm preview
-
-# Deploy to Cloudflare Pages
-pnpm deploy
-```
-
-The build prerenders all routes to static HTML in `dist/client/`, which Cloudflare Pages serves directly.
-
-## Known Issues
-
-- **Prerender hang bug** ([TanStack Router #6602](https://github.com/TanStack/router/issues/6602)): Build hangs after prerendering due to timeout handle leaks in `@tanstack/router-core`. Patched via `pnpm.patchedDependencies` in `package.json` with a `process.exit(0)` timeout workaround.
+- **Local-first** — Runs on your machine, not just in the cloud
+- **Process-based** — Agents are lightweight OS processes, not threads in a monolith
+- **Minimal** — ~6MB runtime, not hundreds of megabytes of dependencies
+- **Open source** — MIT licensed, fully transparent
 
 ## License
 
