@@ -42,7 +42,7 @@ Use them independently or together as a full deployment stack.
 | Project | Description | GitHub |
 |---------|-------------|--------|
 | [ZeptoClaw](https://zeptoclaw.com) | Ultra-lightweight AI agent runtime (~6MB binary) | [qhkm/zeptoclaw](https://github.com/qhkm/zeptoclaw) |
-| r8r | Agent-native workflow automation engine | [qhkm/r8r](https://github.com/qhkm/r8r) |
+| [r8r](https://r8r.sh) | Agent-native workflow automation engine | [qhkm/r8r](https://github.com/qhkm/r8r) |
 | ZeptoPM | Process manager for AI agents | [qhkm/zeptopm](https://github.com/qhkm/zeptopm) |
 | ZeptoRT | Durable turn-based process runtime | [qhkm/zeptort](https://github.com/qhkm/zeptort) |
 | ZeptoCapsule | Isolation sandbox for AI agents | [qhkm/zeptocapsule](https://github.com/qhkm/zeptocapsule) |
